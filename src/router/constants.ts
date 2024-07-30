@@ -1,6 +1,6 @@
 export const WHITE_LIST = [
-  { name: 'notFound', children: [] },
-  { name: 'login', children: [] },
+  { name: 'notFound', children: [], path: '*' },
+  { name: 'login', children: [], path: '/login' },
 ];
 
 export const NOT_FOUND = {
@@ -12,7 +12,7 @@ export const REDIRECT_ROUTE_NAME = 'Redirect';
 export const DEFAULT_ROUTE_NAME = 'Workplace';
 
 export const DEFAULT_ROUTE = {
-  title: 'menu.dashboard.workplace',
+  title: '欢迎页',
   name: DEFAULT_ROUTE_NAME,
   fullPath: '/dashboard/workplace',
 };

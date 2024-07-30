@@ -15,10 +15,10 @@
     @ok="copySettings"
     @cancel="cancel"
   >
-    <template #title> {{ $t('settings.title') }} </template>
+    <template #title> {{ $t('setting.title') }} </template>
     <Block :options="contentOpts" :title="$t('settings.content')" />
     <Block :options="othersOpts" :title="$t('settings.otherSettings')" />
-    <a-alert>{{ $t('settings.alertContent') }}</a-alert>
+    <a-alert>{{ $t('setting.alertContent') }}</a-alert>
   </a-drawer>
 </template>
 

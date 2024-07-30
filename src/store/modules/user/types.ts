@@ -1,19 +1,42 @@
-export type RoleType = '' | '*' | 'admin' | 'user';
-export interface UserState {
-  name?: string;
+export interface Dept {
+  deptId: number;
+  deptName: string;
+  leader: string;
+  orderNum: number;
+  parentId: number;
+  status: string;
+}
+export interface Role {
+  admin: boolean;
+  dataScope?: string;
+  flag?: boolean;
+  roleId: number;
+  roleKey: string;
+  roleName: string;
+  roleSort: number;
+  status: string;
+}
+export interface User {
+  admin: boolean;
   avatar?: string;
-  job?: string;
-  organization?: string;
-  location?: string;
+  delFlag?: number;
+  dept?: Dept;
+  deptId?: number;
   email?: string;
-  introduction?: string;
-  personalWebsite?: string;
-  jobName?: string;
-  organizationName?: string;
-  locationName?: string;
-  phone?: string;
-  registrationDate?: string;
-  accountId?: string;
-  certification?: number;
-  role: RoleType;
+  loginDate?: string;
+  loginIp?: string;
+  nickName: string;
+  phonenumber?: string;
+  remark?: string;
+  roles: Role[];
+  sex?: string;
+  status?: string;
+  userId: number;
+  username: string;
+}
+
+export interface UserState {
+  permissions: string[];
+  roles: string[];
+  user: User;
 }

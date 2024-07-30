@@ -1,11 +1,11 @@
 import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Message, Modal } from '@arco-design/web-vue';
-import { useUserStore } from '@/store';
 import { getToken } from '@/utils/auth';
+import { useUserStore } from '@/store';
 
 export interface HttpResponse<T = unknown> {
-  status: number;
+  // status: number;
   msg: string;
   code: number;
   data: T;
@@ -17,16 +17,23 @@ if (import.meta.env.VITE_API_BASE_URL) {
 
 axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // let each request carry token
-    // this example using the JWT token
-    // Authorization is a custom headers key
-    // please modify it according to the actual situation
     const token = getToken();
     if (token) {
       if (!config.headers) {
         config.headers = {};
       }
-      config.headers.Authorization = `Bearer ${token}`;
+      // 判断headers里面是否包含Authorization属性
+      // 登录接口会带Authorization, 因oauth需要basic认证
+      if (
+        !Object.prototype.hasOwnProperty.call(config.headers, 'Authorization')
+      ) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    // 配置语言
+    if (config.headers) {
+      config.headers['Accept-Language'] =
+        localStorage.getItem('cc-locale') || 'zh-CN';
     }
     return config;
   },
@@ -39,30 +46,14 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
     const res = response.data;
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    if (res.code !== 200) {
       Message.error({
         content: res.msg || 'Error',
         duration: 5 * 1000,
       });
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (
-        [50008, 50012, 50014].includes(res.code) &&
-        response.config.url !== '/api/user/info'
-      ) {
-        Modal.error({
-          title: 'Confirm logout',
-          content:
-            'You have been logged out, you can cancel to stay on this page, or log in again',
-          okText: 'Re-Login',
-          async onOk() {
-            const userStore = useUserStore();
 
-            await userStore.logout();
-            window.location.reload();
-          },
-        });
-      }
+      // 401 续签token 如续签失败清空鉴权 重定向到登录页
+      //  code非200 为错误
       return Promise.reject(new Error(res.msg || 'Error'));
     }
     return res;

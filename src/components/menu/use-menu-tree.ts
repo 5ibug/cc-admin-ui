@@ -19,7 +19,7 @@ export default function useMenuTree() {
     copyRouter.sort((a: RouteRecordNormalized, b: RouteRecordNormalized) => {
       return (a.meta.order || 0) - (b.meta.order || 0);
     });
-    function travel(_routes: RouteRecordRaw[], layer: number) {
+    function travel(_routes: RouteRecordRaw[] | undefined, layer: number) {
       if (!_routes) return null;
 
       const collector: any = _routes.map((element) => {
@@ -28,16 +28,16 @@ export default function useMenuTree() {
           return null;
         }
 
-        // leaf node
-        if (element.meta?.hideChildrenInMenu || !element.children) {
-          element.children = [];
-          return element;
-        }
-
-        // route filter hideInMenu true
-        element.children = element.children.filter(
-          (x) => x.meta?.hideInMenu !== true
-        );
+        // // leaf node
+        // if (element.meta?.hideChildrenInMenu || !element.children) {
+        //   element.children = [];
+        //   return element;
+        // }
+        //
+        // // route filter hideInMenu true
+        // element.children = element.children.filter(
+        //   (x) => x.meta?.hideInMenu !== true
+        // );
 
         // Associated child node
         const subItem = travel(element.children, layer + 1);

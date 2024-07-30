@@ -1,5 +1,8 @@
 <template>
-  <a-layout-footer class="footer">Arco Pro</a-layout-footer>
+  <a-layout-footer class="footer"
+    >CC Admin &copy;Copyright 王振
+    {{ new Date().getFullYear() }}</a-layout-footer
+  >
 </template>
 
 <script lang="ts" setup></script>

@@ -11,7 +11,6 @@
   export default defineComponent({
     emit: ['collapse'],
     setup() {
-      const { t } = useI18n();
       const appStore = useAppStore();
       const router = useRouter();
       const route = useRoute();
@@ -34,38 +33,38 @@
         // Open external link
         if (regexUrl.test(item.path)) {
           openWindow(item.path);
-          selectedKey.value = [item.name as string];
+          selectedKey.value = [item.path as string];
           return;
         }
         // Eliminate external link side effects
         const { hideInMenu, activeMenu } = item.meta as RouteMeta;
-        if (route.name === item.name && !hideInMenu && !activeMenu) {
-          selectedKey.value = [item.name as string];
+        if (route.path === item.path && !hideInMenu && !activeMenu) {
+          selectedKey.value = [item.path as string];
           return;
         }
         // Trigger router change
         router.push({
-          name: item.name,
+          path: item.path,
         });
       };
       const findMenuOpenKeys = (target: string) => {
         const result: string[] = [];
         let isFind = false;
         const backtrack = (item: RouteRecordRaw, keys: string[]) => {
-          if (item.name === target) {
+          if (item.path === target) {
             isFind = true;
             result.push(...keys);
             return;
           }
           if (item.children?.length) {
             item.children.forEach((el) => {
-              backtrack(el, [...keys, el.name as string]);
+              backtrack(el, [...keys, el.path as string]);
             });
           }
         };
         menuTree.value.forEach((el: RouteRecordRaw) => {
           if (isFind) return; // Performance optimization
-          backtrack(el, [el.name as string]);
+          backtrack(el, [el.path as string]);
         });
         return result;
       };
@@ -73,7 +72,7 @@
         const { requiresAuth, activeMenu, hideInMenu } = newRoute.meta;
         if (requiresAuth && (!hideInMenu || activeMenu)) {
           const menuOpenKeys = findMenuOpenKeys(
-            (activeMenu || newRoute.name) as string
+            (activeMenu || newRoute.path) as string
           );
 
           const keySet = new Set([...menuOpenKeys, ...openKeys.value]);
@@ -94,27 +93,28 @@
           if (_route) {
             _route.forEach((element) => {
               // This is demo, modify nodes as needed
-              const icon = element?.meta?.icon
-                ? () => h(compile(`<${element?.meta?.icon}/>`))
-                : null;
+              const icon =
+                element?.meta?.icon && element?.meta?.icon !== '#'
+                  ? () => h(compile(`<${element?.meta?.icon}/>`))
+                  : null;
               const node =
                 element?.children && element?.children.length !== 0 ? (
                   <a-sub-menu
-                    key={element?.name}
+                    key={element?.path}
                     v-slots={{
                       icon,
-                      title: () => h(compile(t(element?.meta?.locale || ''))),
+                      title: () => element.name,
                     }}
                   >
                     {travel(element?.children)}
                   </a-sub-menu>
                 ) : (
                   <a-menu-item
-                    key={element?.name}
+                    key={element?.path}
                     v-slots={{ icon }}
                     onClick={() => goto(element)}
                   >
-                    {t(element?.meta?.locale || '')}
+                    {element?.name}
                   </a-menu-item>
                 );
               nodes.push(node as never);
