@@ -24,6 +24,7 @@ export default {
   'monitor.redis.query': 'cache monitor',
   'monitor.job': 'auto job',
   'system.manage': 'system manage',
+  'system.menu.oauth2': 'Oauth2 manage',
   'menu.manage': 'menu manage',
   'system.dictionaries.list': 'dictionaries manage',
   'system.router.log': 'log manage',

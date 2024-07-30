@@ -24,6 +24,7 @@ export default {
   'monitor.redis.query': '缓存监控',
   'monitor.job': '定时任务',
   'system.manage': '系统管理',
+  'system.menu.oauth2': 'Oauth2管理',
   'menu.manage': '菜单管理',
   'system.dictionaries.list': '字典管理',
   'system.router.log': '日志管理',

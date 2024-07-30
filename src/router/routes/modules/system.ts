@@ -42,6 +42,16 @@ const System: AppRouteRecordRaw = {
         roles: ['*'],
       },
     },
+    {
+      path: 'client',
+      name: 'Client',
+      component: () => import('@/views/system/client/index.vue'),
+      meta: {
+        locale: 'Oauth2管理',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
   ],
 };
 
