@@ -4,10 +4,32 @@ import { TableColumnData } from '@arco-design/web-vue';
 import { PageParams } from '@/types/SystemClient';
 
 const useProTable = (config: {
-  searchParam: proTableParam[]; // 搜索表单
-  api: (...args: any[]) => Promise<any>; // 搜索方法
-  columns: TableColumnData[];
+  searchParam?: proTableParam[]; // 搜索表单
+  api?: (...args: any[]) => Promise<any>; // 搜索方法
+  edit?: (...args: any[]) => Promise<any>; // 搜索方法
+  remove?: (...args: any[]) => Promise<any>; // 搜索方法
+  add?: (...args: any[]) => Promise<any>; // 搜索方法
+  columns?: (TableColumnData & {
+    hidden?: boolean;
+    type?: string;
+    dictType?: string;
+  })[];
+  // 具体方法相关, 如删除等.
+  editButton?: boolean;
+  addButton?: boolean;
+  deleteButton?: boolean;
+  primaryKey?: string;
 }) => {
+  // 处理默认值
+  config = {
+    ...{
+      editButton: true,
+      addButton: true,
+      deleteButton: true,
+      primaryKey: 'id',
+    },
+    ...config,
+  };
   // 表单实际值
   const formModel = ref<{ [key: string]: any }>({});
 
@@ -23,25 +45,33 @@ const useProTable = (config: {
 
   // 初始化表单值
   const initFormModel = () => {
-    config.searchParam.forEach((item) => {
-      formModel.value[item.field] = item.defaultValue || '';
-    });
+    if (config.searchParam) {
+      config.searchParam.forEach((item) => {
+        formModel.value[item.field] = item.defaultValue || '';
+      });
+    } else {
+      throw new Error('searchParam');
+    }
   };
   // 获取数据
   const getData = (param: Record<string, any> = {}) => {
-    config
-      .api({
-        ...{
-          current: pagination.value.current,
-          pageSize: pagination.value.pageSize,
-        },
-        ...formModel.value,
-        ...param,
-      })
-      .then((res: any) => {
-        tableData.value = res.data.records;
-        pagination.value.total = res.data.total + 999;
-      });
+    if (config.api) {
+      config
+        .api({
+          ...{
+            current: pagination.value.current,
+            pageSize: pagination.value.pageSize,
+          },
+          ...formModel.value,
+          ...param,
+        })
+        .then((res: any) => {
+          tableData.value = res.data.records;
+          pagination.value.total = res.data.total + 999;
+        });
+    } else {
+      throw new Error('没有传API');
+    }
   };
 
   // 清空搜索表单
@@ -75,6 +105,7 @@ const useProTable = (config: {
       tableData,
       pagination,
       tablePageChange,
+      config,
     };
   };
   // 初始化

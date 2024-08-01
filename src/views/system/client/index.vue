@@ -3,6 +3,28 @@
   import useProTable from '@/components/ProTable/hooks/useProTable';
   import { pageQuery } from '@/api/system/client';
 
+  // 添加参数是表单数据
+  const add = (record: any) => {
+    console.log(record);
+    return new Promise((resolve) => {});
+  };
+
+  // 编辑方法
+  const edit = (record: any) => {
+    console.log(record);
+    return new Promise((resolve) => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
+  // 删除方法
+  const remove = (record: any) => {
+    console.log(record);
+    return new Promise((resolve) => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   const [register] = useProTable({
     searchParam: [
       {
@@ -11,10 +33,18 @@
       },
     ],
     api: pageQuery,
+    edit,
+    add,
+    remove,
     columns: [
       {
         title: '编号',
         dataIndex: 'clientId',
+      },
+      {
+        title: '授权密钥',
+        dataIndex: 'clientSecret',
+        hidden: true,
       },
       {
         title: '授权范围',
@@ -23,6 +53,8 @@
       {
         title: '授权类型',
         dataIndex: 'authorizedGrantTypes',
+        type: 'dict',
+        dictType: 'sys_oauth_client_details',
       },
       {
         title: '令牌有效期',
@@ -43,10 +75,7 @@
 <template>
   <div class="container">
     <Breadcrumb :items="['system.manage', 'system.menu.oauth2']" />
-
-    <proTable @register="register as any">
-      <template #action="{ record }"> {{ record.clientId }} 操作 </template>
-    </proTable>
+    <proTable @register="register as any" />
   </div>
 </template>
 
