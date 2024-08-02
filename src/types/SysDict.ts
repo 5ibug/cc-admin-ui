@@ -39,3 +39,9 @@ export interface SysDictData {
   remark: string;
   status: string;
 }
+// 缓存的dict
+export type CachedDictionary = {
+  dictType: string;
+  data: SysDictData[];
+  timestamp: number;
+};

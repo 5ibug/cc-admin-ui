@@ -46,7 +46,7 @@
     },
     {
       title: '状态',
-      dataIndex: 'statusSlot',
+      slotName: 'statusSlot',
     },
     {
       title: '创建时间',

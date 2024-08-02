@@ -6,6 +6,8 @@
           <p>欢迎使用CC Admin</p>
           <p>当前CC Admin版本 {{ workplaceData.version }}</p>
           <p>当前SpringBoot版本 {{ workplaceData.springVersion }}</p>
+          <p>测试字典：<dict type="sys_user_sex">1</dict></p>
+          <p>测试字典：<dict type="sys_user_sex" value="0" /></p>
         </div>
       </a-grid-item>
       <a-grid-item class="panel" :span="6">
@@ -28,6 +30,7 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { info, WorkplaceData } from '@/api/system/workplace';
+  import dict from '@/components/dict';
 
   const workplaceData = ref<WorkplaceData>({
     service: undefined,
