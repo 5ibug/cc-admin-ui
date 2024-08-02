@@ -79,7 +79,7 @@ export interface DeptPageListItem {
 
 export interface PostPSearchParams {
   postCode: number | null;
-  postName: number | null;
+  postName: string | null;
   status: disabledStatus;
 }
 export interface PostPageListItem {
@@ -93,4 +93,12 @@ export interface PostPageListItem {
   postSort: number;
   status: disabledStatus;
   flag: boolean;
+}
+export interface PostForm {
+  postCode: string;
+  postId: number;
+  postName: string;
+  postSort: number;
+  remark: string;
+  status: disabledStatus;
 }

@@ -156,12 +156,11 @@
       current: pagination.value.current,
       pageSize: pagination.value.pageSize,
     });
-    listData.value = data.records;
-    pagination.value.total = data.total;
+    listData.value = data?.records || [];
+    pagination.value.total = data?.total || 0;
   };
 
   const search = () => {
-    pagination.value.current = 1;
     fetchData();
   };
 
@@ -270,27 +269,27 @@
     <Breadcrumb :items="['human.manage', 'human.staff.list']" />
     <a-card class="general-card" title="职员管理">
       <a-row>
-        <a-col :flex="1" :model="formModel">
+        <a-col :flex="1">
           <a-form
-            v-model="formModel"
+            :model="formModel"
             :label-col-props="{ span: 6 }"
             :wrapper-col-props="{ span: 18 }"
             label-align="left"
           >
             <a-row :gutter="16">
               <a-col :span="8">
-                <a-form-item field="dictName" label="角色名称">
+                <a-form-item field="roleName" label="角色名称">
                   <a-input
                     v-model="formModel.roleName"
-                    placeholder="请输入用户账号"
+                    placeholder="请输入角色名称"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
-                <a-form-item field="dictType" label="权限字符">
+                <a-form-item field="roleKey" label="权限字符">
                   <a-input
                     v-model="formModel.roleKey"
-                    placeholder="请输入用户账号"
+                    placeholder="请输入角色权限字符"
                   />
                 </a-form-item>
               </a-col>
