@@ -24,12 +24,19 @@
         </a-list>
       </a-grid-item>
     </a-grid>
+
+    <a-grid :cols="24" :row-gap="16" :col-gap="16" style="margin-top: 10px">
+      <a-grid-item class="panel" :span="24" style="padding: 20px">
+        {{ text }}
+      </a-grid-item>
+    </a-grid>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { info, WorkplaceData } from '@/api/system/workplace';
+  import { mutil } from '@/api/ai/test';
   import dict from '@/components/dict';
 
   const workplaceData = ref<WorkplaceData>({
@@ -37,9 +44,19 @@
     version: '',
     springVersion: '',
   });
+
+  const text = ref<string>('');
   // 获取数据
   onMounted(async () => {
     workplaceData.value = (await info()).data;
+
+    mutil({
+      onMessage: (res) => {
+        const data = JSON.parse(res.data);
+        text.value = `${text.value}${data.result.output.content}`;
+      },
+      onError: () => {},
+    });
   });
 </script>
 

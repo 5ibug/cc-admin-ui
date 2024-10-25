@@ -13,7 +13,7 @@ export default mergeConfig(
       // 配置代理，防止跨域，实际上线时用nginx的反向代理
       proxy: {
         '/api': {
-          target: 'http://localhost:8080',
+          target: 'http://192.168.7.3:8080',
           changeOrigin: true,
           rewrite: (path: string) => path.replace(/^\/api/, ''),
         },
