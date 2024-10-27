@@ -31,6 +31,8 @@ export default {
   'system.operlog.list': 'operation log',
   'system.logininfor.list': 'login log',
   'system.monitor.list': 'job log',
+  'system.router.ai': 'ai',
+  'system.router.ai.chat': 'chat',
   'menu.faq': 'FAQ',
   'navbar.docs': 'Docs',
   'navbar.action.locale': 'Switch to English',

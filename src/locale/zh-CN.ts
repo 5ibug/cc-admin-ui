@@ -39,6 +39,8 @@ export default {
   'human.role.list': '角色管理',
   'human.dept.list': '部门管理',
   'human.post.list': '岗位管理',
+  'system.router.ai': '人工智能',
+  'system.router.ai.chat': '对话',
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
